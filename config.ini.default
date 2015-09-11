@@ -1,0 +1,10 @@
+[testing]
+SERVER_NAME = 'localhost'
+SQLALCHEMY_DATABASE_URI = sqlite:///:memory:
+TESTING = True
+
+[development]
+DEBUG = True
+JSONIFY_PRETTYPRINT_REGULAR = True
+SQLALCHEMY_DATABASE_URI = sqlite:////database.sqlite
+

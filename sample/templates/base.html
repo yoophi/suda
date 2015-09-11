@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <link href="http://netdna.bootstrapcdn.com/bootswatch/2.3.1/united/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css"
+          rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <style>
+        .content {
+            margin-top: 60px;
+        }
+
+        .inline-pad {
+            padding-left: 10px;
+        }
+
+        .edit-controls {
+            margin: 1em 0;
+        }
+    </style>
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body>
+<div id="main">
+    <div class="utility-nav navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('main.index') }}">멸치배달 점주님 사이트 </a></li>
+                    <li><a href="{{ url_for('main.restaurants') }}">매장관리 </a></li>
+                    <li><a href="{{ url_for('main.about') }}">서비스 소개 </a></li>
+                    <li><a href="{{ url_for('main.guide') }}">이용안내 </a></li>
+                    <li><a href="{{ url_for('main.customer') }}">고객센터 </a></li>
+                </ul>
+                <ul class="nav pull-right">
+                    {% if current_user.is_authenticated() %}
+                    <li><a href="{{ url_for('auth.do_logout') }}">로그아웃 </a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.do_login') }}">로그인 </a></li>
+                    <li><a href="{{ url_for('auth.do_join') }}">회원가입 </a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('main.restaurant_add') }}">무료 매장등록 대행 </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content container">
+        {% block main %}{% endblock main %}
+    </div>
+    <div class="footer">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="{{ url_for('main.company') }}">회사소개 </a> <span class="divider">/</span></li>
+                <li><a href="{{ url_for('main.agreements') }}">이용약관 </a> <span class="divider">/</span></li>
+                <li><a href="{{ url_for('main.privacy') }}">개인정보 취급방침</a></li>
+            </ul>
+            <div>
+                (주)리치빔 | 서울특별시 송파구 동남로 323(오금동 121-3) ...
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

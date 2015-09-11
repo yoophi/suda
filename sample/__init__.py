@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import os.path as op
+
+from flask import Flask
+from flask.ext.login import LoginManager
+from flask.ext.oauthlib.provider import OAuth2Provider
+from flask.ext.sqlalchemy import SQLAlchemy
+
+from sample.config import config_factory
+
+__version__ = '0.1'
+
+db = SQLAlchemy()
+
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'auth.login'
+
+oauth = OAuth2Provider()
+
+
+def create_app(config_name):
+    """
+    :param config_name: developtment, production or testing
+    :return: flask application
+
+    flask application generator
+    """
+    template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
+    app = Flask(__name__, template_folder=template_folder)
+    config = config_factory(config_name)
+    config.init_app(app)
+
+    db.init_app(app)
+    login_manager.init_app(app)
+    oauth.init_app(app)
+
+    from sample.main import main as main_blueprint
+
+    app.register_blueprint(main_blueprint)
+
+    from sample.auth import auth as auth_blueprint
+
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    from sample.api_1_0 import api as api_1_0_blueprint
+
+    app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
+
+    return app
