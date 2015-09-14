@@ -184,4 +184,3 @@ class Token(db.Model):
 def load_user(user_id):
     """Hook for Flask-Login to load a User instance from a user ID."""
     return User.query.get(user_id)
-
