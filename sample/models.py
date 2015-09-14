@@ -30,7 +30,7 @@ class Client(db.Model):
     user_id = db.Column(db.Unicode(200))
 
     client_id = db.Column(db.Unicode(40), primary_key=True)
-    client_secret = db.Column(db.Unicode(55), unique=True, index=True, nullable=False)
+    client_secret = db.Column(db.Unicode(55), index=True, nullable=False)
 
     # public or confidential
     is_confidential = db.Column(db.Boolean)
