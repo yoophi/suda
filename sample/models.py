@@ -5,22 +5,23 @@
 sqlalchemy model
 """
 
-import base64
-import json
-import time
-
 from datetime import datetime
-from flask import url_for
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, synonym, backref
-from voluptuous import Invalid
 
+from sqlalchemy.orm import relationship, synonym
 from sample import db, login_manager
+
+from sqlalchemy.ext.declarative import declared_attr
+from inflection import tableize
+
+
+class MyMixin(object):
+    @declared_attr
+    def __tablename__(cls):
+        return tableize(cls.__name__)
 
 
 class Client(db.Model):
-    __tablename__ = 'clients'
-    # human readable name, not required
+    id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.Unicode(40))
 
     # human readable description, not required
@@ -29,14 +30,14 @@ class Client(db.Model):
     # creator of the client, not required
     user_id = db.Column(db.Unicode(200))
 
-    client_id = db.Column(db.Unicode(40), primary_key=True)
-    client_secret = db.Column(db.Unicode(55), unique=True, index=True, nullable=False)
+    client_id = db.Column(db.Unicode(40), unique=True)
+    client_secret = db.Column(db.Unicode(55), index=True, nullable=False)
 
     # public or confidential
     is_confidential = db.Column(db.Boolean)
 
-    _redirect_uris = db.Column(db.UnicodeText)
-    _default_scopes = db.Column(db.UnicodeText)
+    redirect_uris_text = db.Column(db.UnicodeText)
+    default_scopes_text = db.Column(db.UnicodeText)
 
     @property
     def client_type(self):
@@ -46,8 +47,8 @@ class Client(db.Model):
 
     @property
     def redirect_uris(self):
-        if self._redirect_uris:
-            return self._redirect_uris.split()
+        if self.redirect_uris_text:
+            return self.redirect_uris_text.split()
         return []
 
     @property
@@ -56,15 +57,15 @@ class Client(db.Model):
 
     @property
     def default_scopes(self):
-        if self._default_scopes:
-            return self._default_scopes.split()
+        if self.default_scopes_text:
+            return self.default_scopes_text.split()
         return []
 
 
 class User(db.Model):
-    __tablename__ = 'users'
+    id = db.Column(db.Integer(), primary_key=True)
 
-    username = db.Column(db.Unicode(100), primary_key=True, nullable=False)
+    username = db.Column(db.Unicode(100), unique=True, nullable=False)
     name = db.Column(db.Unicode(200))
     _password = db.Column('password', db.Unicode(100))
 
@@ -115,13 +116,11 @@ class User(db.Model):
 
 
 class Grant(db.Model):
-    __tablename__ = 'grants'
-
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Unicode(200))
 
-    client_id = db.Column(db.Unicode(40), db.ForeignKey('clients.client_id'), nullable=False, )
+    client_id = db.Column(db.Unicode(40), db.ForeignKey(Client.__tablename__ + '.client_id'), nullable=False, )
     client = relationship('Client')
 
     code = db.Column(db.Unicode(255), index=True, nullable=False)
@@ -144,11 +143,9 @@ class Grant(db.Model):
 
 
 class Token(db.Model):
-    __tablename__ = 'tokens'
-
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(
-        db.Unicode(40), db.ForeignKey('clients.client_id'),
+        db.Unicode(40), db.ForeignKey(Client.__tablename__ + '.client_id'),
         nullable=False,
     )
     client = relationship('Client')
@@ -188,13 +185,3 @@ def load_user(user_id):
     """Hook for Flask-Login to load a User instance from a user ID."""
     return User.query.get(user_id)
 
-
-class BaseMixin(object):
-    id = db.Column('id', db.Integer, primary_key=True)
-    created_at = db.Column('created_at', db.DateTime, nullable=False, default=datetime.now)
-    updated_at = db.Column('updated_at', db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
-
-    def get_date_fields(self):
-        return dict(
-            created_at=self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            updated_at=self.updated_at.strftime("%Y-%m-%d %H:%M:%S"))

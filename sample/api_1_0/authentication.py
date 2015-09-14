@@ -80,7 +80,7 @@ def save_user_token(token, request, *args, **kwargs):
 
 @oauth.usergetter
 def get_user(username, password, *args, **kwargs):
-    user = User.query.get(username=username).first()
+    user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         return user
     return None
