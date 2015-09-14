@@ -9,10 +9,9 @@ from flask.ext.oauthlib.provider import OAuth2Provider
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from sample.config import config_factory
+from sample.models import db
 
 __version__ = '0.1'
-
-db = SQLAlchemy()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -50,3 +49,9 @@ def create_app(config_name):
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
 
     return app
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """Hook for Flask-Login to load a User instance from a user ID."""
+    return User.query.get(user_id)

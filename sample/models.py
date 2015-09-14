@@ -6,12 +6,14 @@ sqlalchemy model
 """
 
 from datetime import datetime
+from flask.ext.sqlalchemy import SQLAlchemy
 
 from sqlalchemy.orm import relationship, synonym
-from sample import db, login_manager
 
 from sqlalchemy.ext.declarative import declared_attr
 from inflection import tableize
+
+db = SQLAlchemy()
 
 
 class MyMixin(object):
@@ -180,7 +182,3 @@ class Token(db.Model):
     scope = synonym('_scopes', descriptor=scope_descriptor)
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    """Hook for Flask-Login to load a User instance from a user ID."""
-    return User.query.get(user_id)
