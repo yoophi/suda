@@ -28,20 +28,15 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('main.index') }}">멸치배달 점주님 사이트 </a></li>
-                    <li><a href="{{ url_for('main.restaurants') }}">매장관리 </a></li>
-                    <li><a href="{{ url_for('main.about') }}">서비스 소개 </a></li>
-                    <li><a href="{{ url_for('main.guide') }}">이용안내 </a></li>
-                    <li><a href="{{ url_for('main.customer') }}">고객센터 </a></li>
+                    <li><a href="#">고객센터 </a></li>
                 </ul>
                 <ul class="nav pull-right">
                     {% if current_user.is_authenticated() %}
-                    <li><a href="{{ url_for('auth.do_logout') }}">로그아웃 </a></li>
+                    <li><a href="#">로그아웃 </a></li>
                     {% else %}
-                    <li><a href="{{ url_for('auth.do_login') }}">로그인 </a></li>
-                    <li><a href="{{ url_for('auth.do_join') }}">회원가입 </a></li>
+                    <li><a href="#">로그인 </a></li>
+                    <li><a href="#">회원가입 </a></li>
                     {% endif %}
-                    <li><a href="{{ url_for('main.restaurant_add') }}">무료 매장등록 대행 </a></li>
                 </ul>
             </div>
         </div>
@@ -52,9 +47,7 @@
     <div class="footer">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="{{ url_for('main.company') }}">회사소개 </a> <span class="divider">/</span></li>
-                <li><a href="{{ url_for('main.agreements') }}">이용약관 </a> <span class="divider">/</span></li>
-                <li><a href="{{ url_for('main.privacy') }}">개인정보 취급방침</a></li>
+                <li><a href="#">회사소개 </a> <span class="divider">/</span></li>
             </ul>
             <div>
                 (주)리치빔 | 서울특별시 송파구 동남로 323(오금동 121-3) ...

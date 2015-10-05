@@ -96,9 +96,9 @@ class User(db.Model):
         return self.password == self._get_encrypted_password(password)
 
     @classmethod
-    def authenticate(cls, query, user_id, password):
-        user_id = user_id.strip().lower()
-        user = query(cls).filter(cls.user_id == user_id).first()
+    def authenticate(cls, query, username, password):
+        username = username.strip().lower()
+        user = query(cls).filter(cls.username == username).first()
         if user is None:
             return None, False
 
@@ -111,10 +111,10 @@ class User(db.Model):
         return True
 
     def get_id(self):
-        return self.user_id
+        return self.id
 
     def __repr__(self):
-        return u'<{self.__class__.__name__}: {self.user_id}>'.format(self=self)
+        return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
 
 class Grant(db.Model):
