@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+from flask.ext.cors import CORS
 
 import os.path as op
 
@@ -9,7 +10,7 @@ from flask.ext.oauthlib.provider import OAuth2Provider
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from sample.config import config_factory
-from sample.models import db
+from sample.models import db, User
 
 __version__ = '0.1'
 
@@ -18,7 +19,7 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 oauth = OAuth2Provider()
-
+cors = CORS()
 
 def create_app(config_name):
     """
@@ -29,6 +30,9 @@ def create_app(config_name):
     """
     template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
     app = Flask(__name__, template_folder=template_folder)
+
+    cors.init_app(app)
+
     config = config_factory(config_name)
     config.init_app(app)
 
