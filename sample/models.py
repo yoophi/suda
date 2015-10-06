@@ -5,25 +5,14 @@
 sqlalchemy model
 """
 
-from datetime import datetime
 from flask.ext.sqlalchemy import SQLAlchemy
-
 from sqlalchemy.orm import relationship, synonym
-
-from sqlalchemy.ext.declarative import declared_attr
-from inflection import tableize
 
 db = SQLAlchemy()
 
 
-class MyMixin(object):
-    @declared_attr
-    def __tablename__(cls):
-        return tableize(cls.__name__)
-
-
 class Client(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(40))
 
     # human readable description, not required
@@ -66,8 +55,9 @@ class Client(db.Model):
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
+
 class User(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
 
     username = db.Column(db.Unicode(100), unique=True, nullable=False)
     name = db.Column(db.Unicode(200))
@@ -149,12 +139,16 @@ class Grant(db.Model):
 class Token(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(
-        db.Unicode(40), db.ForeignKey(Client.__tablename__ + '.client_id'),
+        db.Unicode(40),
+        db.ForeignKey(Client.__tablename__ + '.client_id'),
         nullable=False,
     )
     client = relationship('Client')
 
-    user_id = db.Column(db.Unicode(200), db.ForeignKey(User.__tablename__ + '.id'), nullable=False, )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(User.__tablename__ + '.id'),
+        nullable=False, )
     user = relationship('User')
 
     # currently only bearer is supported
@@ -184,4 +178,5 @@ class Token(db.Model):
     scope_descriptor = property(_get_scope, _set_scope)
     scope = synonym('_scopes', descriptor=scope_descriptor)
 
-
+    def __repr__(self):
+        return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
