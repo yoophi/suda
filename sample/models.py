@@ -63,6 +63,8 @@ class Client(db.Model):
             return self.default_scopes_text.split()
         return []
 
+    def __repr__(self):
+        return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
 class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -152,7 +154,8 @@ class Token(db.Model):
     )
     client = relationship('Client')
 
-    user_id = db.Column(db.Unicode(200))
+    user_id = db.Column(db.Unicode(200), db.ForeignKey(User.__tablename__ + '.id'), nullable=False, )
+    user = relationship('User')
 
     # currently only bearer is supported
     token_type = db.Column(db.Unicode(40))

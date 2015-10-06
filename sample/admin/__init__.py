@@ -12,7 +12,7 @@ import flask_admin
 from flask_admin.contrib import sqla
 
 from sample import config, config_factory
-from sample.models import User, Client
+from sample.models import User, Client, Token, Grant
 
 template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
 
@@ -56,6 +56,8 @@ admin = flask_admin.Admin(app, template_mode='bootstrap3',
 
 admin.add_view(UserAdmin(User, db.session))
 admin.add_view(ClientAdmin(Client, db.session))
+admin.add_view(sqla.ModelView(Token, db.session))
+admin.add_view(sqla.ModelView(Grant, db.session))
 
 
 # Flask views
