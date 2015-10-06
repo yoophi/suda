@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Authorization</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block main %}
   <p>Client: {{ client.client_id }}</p>
-  <p>User: {{ user.user_id }}</p>
+  <p>User: {{ user.username }}</p>
   <form action="/api/v1.0/oauth/authorize" method="post">
     <p>Allow access?</p>
     <input type="hidden" name="client_id" value="{{ client.client_id }}">
@@ -19,5 +14,4 @@
     <input type="submit" name="confirm" value="yes">
     <input type="submit" name="confirm" value="no">
   </form>
-</body>
-</html>
+{% endblock main %}

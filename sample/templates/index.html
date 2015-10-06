@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Page Title{% endblock title %}
 {% block main %}
-<h2>This is a child template.</h2>
+    {% if current_user.is_authenticated() %}
+        <h2>Hello, {{ current_user.username }}.</h2>
+    {% else %}
+        <h2>Hello, guest. please <a href="{{ url_for('auth.login') }}">login here</a>.</h2>
+    {% endif %}
 {% endblock main %}

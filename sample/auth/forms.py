@@ -9,3 +9,12 @@ class LoginForm(Form):
     """
     username = StringField('Username', [required()])
     password = PasswordField('Password', [required()])
+
+
+class JoinForm(Form):
+    """Render HTML input for user join form.
+
+    Authentication (i.e. password verification) happens in the view function.
+    """
+    username = StringField('Username', [required()])
+    password = PasswordField('Password', [required()])

@@ -28,14 +28,14 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">고객센터 </a></li>
+                    <li><a href="{{ url_for('main.index') }}">SAMPLE</a></li>
                 </ul>
                 <ul class="nav pull-right">
                     {% if current_user.is_authenticated() %}
-                    <li><a href="#">로그아웃 </a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">로그아웃 </a></li>
                     {% else %}
-                    <li><a href="#">로그인 </a></li>
-                    <li><a href="#">회원가입 </a></li>
+                    <li><a href="{{ url_for('auth.login') }}">로그인 </a></li>
+                    <li><a href="{{ url_for('auth.join') }}">회원가입 </a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -46,12 +46,7 @@
     </div>
     <div class="footer">
         <div class="container">
-            <ul class="breadcrumb">
-                <li><a href="#">회사소개 </a> <span class="divider">/</span></li>
-            </ul>
-            <div>
-                (주)리치빔 | 서울특별시 송파구 동남로 323(오금동 121-3) ...
-            </div>
+                sample application
         </div>
     </div>
 </div>

@@ -9,6 +9,6 @@ from sample import oauth
 @oauth.require_oauth('email')
 def me():
     user = request.oauth.user
-    return jsonify(id=user.id, username=user.name)
+    return jsonify(id=user.id, username=user.username)
 
 
