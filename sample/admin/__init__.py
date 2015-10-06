@@ -47,8 +47,14 @@ class UserAdmin(MyModelView):
 
 
 class ClientAdmin(MyModelView):
-    form_columns = ['client_id', 'client_secret', 'name', 'description', 'is_confidential', 'redirect_uris_text', 'default_scopes_text']
+    form_columns = ['client_id', 'client_secret', 'name', 'description', 'is_confidential', 'redirect_uris_text',
+                    'default_scopes_text']
     column_list = ['client_id', 'name', 'description', 'is_confidential', 'redirect_uris_text', 'default_scopes_text']
+
+
+class TokenAdmin(MyModelView):
+    # column_searchable_list = (('user_id'), )
+    column_filters = (('user.username'), )
 
 
 admin = flask_admin.Admin(app, template_mode='bootstrap3',
@@ -56,7 +62,7 @@ admin = flask_admin.Admin(app, template_mode='bootstrap3',
 
 admin.add_view(UserAdmin(User, db.session))
 admin.add_view(ClientAdmin(Client, db.session))
-admin.add_view(sqla.ModelView(Token, db.session))
+admin.add_view(TokenAdmin(Token, db.session))
 admin.add_view(sqla.ModelView(Grant, db.session))
 
 

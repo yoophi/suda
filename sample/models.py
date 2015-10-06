@@ -112,7 +112,12 @@ class User(db.Model):
 class Grant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    user_id = db.Column(db.Unicode(200))
+    # user_id = db.Column(db.Unicode(200))dd
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey(User.__tablename__ + '.id'),
+        nullable=False, )
+    user = relationship('User')
 
     client_id = db.Column(db.Unicode(40), db.ForeignKey(Client.__tablename__ + '.client_id'), nullable=False, )
     client = relationship('Client')
