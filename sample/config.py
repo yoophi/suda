@@ -28,15 +28,20 @@ class Config(object):
             op.join(op.dirname(basedir), 'config.ini'),
             '/etc/sample/config.ini',
         ]
+
         parser = SafeConfigParser()
         parser.read(candidates)
         if not parser.has_section(self.section_name):
+            import logging
             logging.warning('no section [%s]' % self.section_name)
             sys.exit(1)
+
         for key, value in parser.items(self.section_name):
             key = str(key).upper()
-
             setattr(self, key, value)
+
+            if key.startswith('SQLALCHEMY_BINDS_'):
+                self.SQLALCHEMY_BINDS[key.replace('SQLALCHEMY_BINDS_', '').lower()] = value
 
     def init_app(self, app):
         app.config.from_object(self)
@@ -69,4 +74,3 @@ def config_factory(config_name='default'):
               'default': DevelopmentConfig}
 
     return config[config_name]()
-
