@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-from flask.ext.cors import CORS
-
 import os.path as op
 
-from flask import Flask
+from flask.ext.cors import CORS
 from flask.ext.login import LoginManager
 from flask.ext.oauthlib.provider import OAuth2Provider
-from flask.ext.sqlalchemy import SQLAlchemy
 
-from sample.config import config_factory
-from sample.models import db, User
+from .helpers import Flask
+from .models import db, User
 
 __version__ = '0.1'
 
@@ -30,12 +27,10 @@ def create_app(config_name):
     """
     template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
     app = Flask(__name__, template_folder=template_folder)
+    app.config.from_yaml(app.root_path)
+    app.config.from_heroku()
 
     cors.init_app(app)
-
-    config = config_factory(config_name)
-    config.init_app(app)
-
     db.init_app(app)
     login_manager.init_app(app)
     oauth.init_app(app)
