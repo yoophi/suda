@@ -25,14 +25,6 @@ def make_shell_context():
     return dict(app=app, db=db)
 
 
-@manager.option('-p', '--port', dest='port', default=9000)
-@manager.option('-h', '--host', dest='host', default='127.0.0.1')
-def run_admin(port, host):
-    from sample.admin import app as admin_app
-
-    admin_app.run(host=host, port=int(port))
-
-
 @manager.command
 def test(coverage=False):
     """Run the unit test."""
