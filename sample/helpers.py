@@ -1,5 +1,6 @@
 import os
 import yaml
+import q
 
 from flask import Flask as BaseFlask, Config as BaseConfig
 
@@ -20,8 +21,8 @@ class Config(BaseConfig):
         env = os.environ.get('FLASK_ENV', 'development').upper()
         self['ENVIRONMENT'] = env.lower()
 
-        for fn in ('app', ):
-            config_file = os.path.join(root_path, 'config', '%s.yml' % fn)
+        for path in ('/etc', os.path.dirname(root_path), root_path, ):
+            config_file = os.path.join(path, 'config.yml')
 
             try:
                 with open(config_file) as f:

@@ -62,3 +62,4 @@ docs/*
 .vagrant
 config.ini
 delivery/static/category_images
+config.yml
