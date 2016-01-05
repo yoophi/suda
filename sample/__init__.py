@@ -5,6 +5,7 @@ import os.path as op
 from flask.ext.cors import CORS
 from flask.ext.login import LoginManager
 from flask.ext.oauthlib.provider import OAuth2Provider
+from flask_marshmallow import Marshmallow
 
 from .helpers import Flask
 from .models import db, User
@@ -17,6 +18,7 @@ login_manager.login_view = 'auth.login'
 
 oauth = OAuth2Provider()
 cors = CORS()
+ma = Marshmallow()
 
 def create_app(config_name):
     """
@@ -33,6 +35,7 @@ def create_app(config_name):
     cors.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    ma.init_app(app)
     oauth.init_app(app)
 
     from sample.main import main as main_blueprint

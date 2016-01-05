@@ -185,3 +185,14 @@ class Token(db.Model):
 
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Unicode)
+    body = db.Column(db.Text)
+
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
