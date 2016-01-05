@@ -4,7 +4,6 @@ Flask-DebugToolbar==0.10.0
 Flask-Fixtures==0.3.3
 Flask-Login==0.2.11
 Flask-Marshmallow
-Flask-Marshmellow
 Flask-Migrate==1.4.0
 Flask-OAuthlib==0.9.1
 Flask-RESTful==0.3.3
