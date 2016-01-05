@@ -4,9 +4,9 @@
 
 {% block main %}
 <div class="row">
+<h1>Post Add</h1>
   <div class="login well offset2 span8">
     <form method="post" class="form-horizontal">
-      <legend>Add</legend>
       {% if error %}<p class="alert alert-error">{{ error }}</p>{% endif %}
       <div class="control-group{% if form.title.errors %} error{% endif%}">
         {{ form.title.label(class="control-label") }}

@@ -4,6 +4,8 @@
 
 {% block main %}
 <div class="row">
+<h1>Post List</h1>
+<div><a href="{{ url_for('main.post_add') }}" class="btn btn-default" role="button">Add Post</a> </div>
 <table class="table">
     <thead>
     <tr>
@@ -16,7 +18,7 @@
     {% for post in posts %}
     <tr>
         <td>{{ post.id }}</td>
-        <td>{{ post.title }}</td>
+        <td><a href="{{ url_for('main.post', id=post.id) }}">{{ post.title }}</a></td>
         <td>{{ post.created_at }}</td>
     </tr>
     {% endfor %}

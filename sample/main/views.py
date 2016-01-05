@@ -17,6 +17,12 @@ def posts():
     return render_template('posts/list.html', posts=posts)
 
 
+@main.route('/post/<int:id>', methods=['GET'])
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('posts/detail.html', post=post)
+
+
 @main.route('/post/add', methods=['GET', 'POST'])
 def post_add():
     form = PostForm(request.form)

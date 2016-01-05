@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, PasswordField
+from wtforms import Form, StringField, TextAreaField
 from wtforms.validators import required
 
 
@@ -7,6 +7,5 @@ class PostForm(Form):
 
     """
     title = StringField('Title', [required()])
-    body = PasswordField('Body', [required()])
-
+    body = TextAreaField('Body', [required()])
 
