@@ -1,6 +1,5 @@
 import os
 import yaml
-import q
 
 from flask import Flask as BaseFlask, Config as BaseConfig
 
