@@ -1,6 +1,5 @@
 import os
 import yaml
-
 from flask import Flask as BaseFlask, Config as BaseConfig
 
 
@@ -16,18 +15,26 @@ class Config(BaseConfig):
             if key in os.environ:
                 self[key] = os.environ[key]
 
-    def from_yaml(self, root_path):
+    def from_yaml(self, root_path, config_name=None):
         env = os.environ.get('FLASK_ENV', 'development').upper()
         self['ENVIRONMENT'] = env.lower()
 
-        for path in ('/etc', os.path.dirname(root_path), root_path, ):
+        if not config_name:
+            config_name = env
+
+        config_name = config_name.upper()
+
+        for path in ('/etc', os.path.dirname(root_path), root_path,):
             config_file = os.path.join(path, 'config.yml')
 
             try:
                 with open(config_file) as f:
                     c = yaml.load(f)
 
-                c = c.get(env, c)
+                # c = c.get(env, c)
+                c = c.get(config_name, c)
+                import q; q(c)
+                import q; q(config_name)
 
                 for key in c.iterkeys():
                     if key.isupper():

@@ -1,0 +1,26 @@
+dataset = [
+    dict(
+        model='sample.models.User',
+        records=[
+            dict(
+                username=u'sample@test.com',
+                name=u'user',
+                password=u'secret'
+            ),
+        ]
+    ),
+    dict(
+        model='sample.models.Client',
+        records=[
+            dict(
+                name=u"foo",
+                user_id=u"sample@test.com",
+                client_id=u"foo",
+                client_secret=u"secret",
+                is_confidential=True,
+                redirect_uris_text=u"http://localhost",
+                default_scopes_text=u"email"
+            ),
+        ]
+    ),
+]

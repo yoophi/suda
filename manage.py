@@ -15,7 +15,7 @@ if os.environ.get('FLASK_COVERAGE'):
     COV = coverage.coverage(branch=True, include='sample/*')
     COV.start()
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_CONFIG') or 'development')
 
 manager = Manager(app)
 migrate = Migrate(app, db)

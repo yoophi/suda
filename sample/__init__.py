@@ -29,7 +29,7 @@ def create_app(config_name):
     """
     template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
     app = Flask(__name__, template_folder=template_folder)
-    app.config.from_yaml(app.root_path)
+    app.config.from_yaml(app.root_path, config_name)
     app.config.from_heroku()
 
     cors.init_app(app)
