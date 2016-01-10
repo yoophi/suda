@@ -6,12 +6,14 @@ sqlalchemy model
 """
 
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, synonym
 
 db = SQLAlchemy()
 
 
 class Client(db.Model):
+    __tablename__ = 'clients'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(40))
 
@@ -57,8 +59,9 @@ class Client(db.Model):
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'users'
 
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Unicode(100), unique=True, nullable=False)
     name = db.Column(db.Unicode(200))
     _password = db.Column('password', db.Unicode(100))
@@ -110,6 +113,8 @@ class User(db.Model):
 
 
 class Grant(db.Model):
+    __tablename__ = 'grants'
+
     id = db.Column(db.Integer, primary_key=True)
 
     # user_id = db.Column(db.Unicode(200))dd
@@ -142,6 +147,8 @@ class Grant(db.Model):
 
 
 class Token(db.Model):
+    __tablename__ = 'tokens'
+
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(
         db.Unicode(40),
@@ -191,6 +198,9 @@ class Post(db.Model):
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey("users.id"))
+    user = relationship("User", backref='posts')
+
     title = db.Column(db.Unicode)
     body = db.Column(db.Text)
 

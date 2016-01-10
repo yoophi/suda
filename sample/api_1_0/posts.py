@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
 from flask import jsonify, request
-from sample import ma
+from sample import ma, oauth
 from sample.api_1_0 import api
 from sample.models import db, Post
 
@@ -38,9 +38,11 @@ def posts():
 
 
 @api.route('/post', methods=['PUT'])
+@oauth.require_oauth('email')
 def post_add():
+    current_user = request.oauth.user
     data = json.loads(request.data)
-    post = Post(title=(data['title']), body=(data['body']))
+    post = Post(title=data['title'], body=data['body'], user_id=current_user.id)
     db.session.add(post)
     try:
         db.session.commit()
