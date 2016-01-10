@@ -10,7 +10,6 @@ from flask.ext.login import LoginManager
 from flask.ext.oauthlib.provider import OAuth2Provider
 from flask_marshmallow import Marshmallow
 
-# from .helpers import Flask
 from .models import db, User
 
 __version__ = '0.1'
