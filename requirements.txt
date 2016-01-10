@@ -22,4 +22,5 @@ python-dateutil==2.4.2
 pyyaml
 shortuuid==0.4.2
 voluptuous==0.8.7
+git+https://github.com/yoophi/flask-config.git@master#egg=Flask-Config
 

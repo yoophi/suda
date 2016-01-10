@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
+import os
 import os.path as op
 
+from flask import Flask
+from flask.ext.config import Config
 from flask.ext.cors import CORS
 from flask.ext.login import LoginManager
 from flask.ext.oauthlib.provider import OAuth2Provider
 from flask_marshmallow import Marshmallow
 
-from .helpers import Flask
+# from .helpers import Flask
 from .models import db, User
 
 __version__ = '0.1'
@@ -17,6 +20,7 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 oauth = OAuth2Provider()
+config = Config()
 cors = CORS()
 ma = Marshmallow()
 
@@ -29,8 +33,10 @@ def create_app(config_name):
     """
     template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
     app = Flask(__name__, template_folder=template_folder)
-    app.config.from_yaml(app.root_path, config_name)
-    app.config.from_heroku()
+
+    config.init_app(app)
+
+    app.config.from_yaml(config_name=config_name, search_paths=[os.path.dirname(app.root_path)])
 
     cors.init_app(app)
     db.init_app(app)
