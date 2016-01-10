@@ -60,6 +60,4 @@ docs/*
 
 .idea
 .vagrant
-config.ini
-delivery/static/category_images
-config.yml
+*.yaml
