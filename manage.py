@@ -5,6 +5,7 @@ import os
 
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.script.commands import ShowUrls
 
 from sample import create_app, db
 
@@ -52,6 +53,7 @@ def test(coverage=False):
 
 manager.add_command('shell', Shell(make_context=make_shell_context, use_bpython=True))
 manager.add_command('db', MigrateCommand)
+manager.add_command('show_urls', ShowUrls)
 
 if __name__ == '__main__':
     manager.run()
