@@ -4,7 +4,7 @@
 import unittest
 import json
 from flask import url_for
-from sample import create_app, db
+from suda import create_app, db
 from tests.utils import load_fixtures_from_file
 
 
@@ -37,7 +37,7 @@ class TesterBase(unittest.TestCase):
         else:
             return rv._status_code, None
 
-    def get_access_token(self, username='sample@test.com', password='secret'):
+    def get_access_token(self, username='suda@test.com', password='secret'):
         payload = {
             'grant_type': 'password',
             'client_id': 'foo',

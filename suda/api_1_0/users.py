@@ -3,9 +3,9 @@
 from flask import request
 from flask.ext.restful import abort
 
-from sample import oauth, ma
-from sample.api_1_0 import api
-from sample.models import User
+from suda import oauth, ma
+from suda.api_1_0 import api
+from suda.models import User
 
 
 class UserSchema(ma.Schema):

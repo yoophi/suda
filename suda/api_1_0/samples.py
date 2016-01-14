@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from sample.api_1_0 import api
+from suda.api_1_0 import api
 
 
 @api.route('/samples')

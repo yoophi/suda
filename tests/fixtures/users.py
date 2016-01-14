@@ -1,20 +1,20 @@
 dataset = [
     dict(
-        model='sample.models.User',
+        model='suda.models.User',
         records=[
             dict(
-                username=u'sample@test.com',
+                username=u'suda@test.com',
                 name=u'user',
                 password=u'secret'
             ),
         ]
     ),
     dict(
-        model='sample.models.Client',
+        model='suda.models.Client',
         records=[
             dict(
                 name=u"foo",
-                user_id=u"sample@test.com",
+                user_id=u"suda@test.com",
                 client_id=u"foo",
                 client_secret=u"secret",
                 is_confidential=True,

@@ -9,7 +9,7 @@ from flask import url_for
 from flask.ext.fixtures import load_fixtures
 
 from tests import TesterBase
-from sample.models import db
+from suda.models import db
 from tests.fixtures.users import dataset
 
 
@@ -21,7 +21,7 @@ class Tester(TesterBase):
             'grant_type': 'password',
             'client_id': 'foo',
             'client_secret': 'secret',
-            'username': 'sample@test.com',
+            'username': 'suda@test.com',
             'password': 'secret',
             'scope': 'email'
         }
@@ -31,7 +31,7 @@ class Tester(TesterBase):
             'Authorization': 'Bearer %s' % (body['access_token'],)
         })
         self.assertEqual(status_code, 200)
-        self.assertEqual(body['username'], 'sample@test.com')
+        self.assertEqual(body['username'], 'suda@test.com')
         self.assertEqual(body['name'], 'user')
 
         # 존재하지 않는 토큰 요청

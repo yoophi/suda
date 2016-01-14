@@ -26,7 +26,7 @@ class Config(object):
 
         candidates = [
             op.join(op.dirname(basedir), 'config.ini'),
-            '/etc/sample/config.ini',
+            '/etc/suda/config.ini',
         ]
 
         parser = SafeConfigParser()

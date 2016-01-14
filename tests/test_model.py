@@ -1,6 +1,6 @@
 from unittest import TestCase
-from sample import create_app
-from sample.models import db, User, Token
+from suda import create_app
+from suda.models import db, User, Token
 
 
 class TestUserModel(TestCase):

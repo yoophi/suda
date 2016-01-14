@@ -9,9 +9,9 @@ from datetime import datetime, timedelta
 from flask import request, render_template, jsonify, redirect
 from flask.ext.login import current_user, login_required
 
-from sample.api_1_0 import api
-from sample import oauth, db
-from sample.models import Client, Grant, User, Token
+from suda.api_1_0 import api
+from suda import oauth, db
+from suda.models import Client, Grant, User, Token
 
 
 @oauth.clientgetter
@@ -126,7 +126,7 @@ def user_access_token():
           'grant_type': 'password',
           'client_id': 'foo',
           'client_secret': 'secret',
-          'username': 'sample@test.com',
+          'username': 'suda@test.com',
           'password': 'secret',
           'scope': 'email'
        }

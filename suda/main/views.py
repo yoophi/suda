@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for
 from flask.ext.login import current_user
-from sample.main import main
-from sample.main.forms import PostForm
-from sample.models import Post, db
+from suda.main import main
+from suda.main.forms import PostForm
+from suda.models import Post, db
 
 
 @main.route('/', methods=['GET', 'POST'])

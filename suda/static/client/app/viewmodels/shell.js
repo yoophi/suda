@@ -17,7 +17,7 @@
                 {
                     route: '',
                     title: 'Sample',
-                    moduleId: 'viewmodels/sample',
+                    moduleId: 'viewmodels/suda',
                     nav: true
                 },
             ]).buildNavigationModel();

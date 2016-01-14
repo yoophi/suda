@@ -1,5 +1,5 @@
 from flask import render_template
-from sample.main import main
+from suda.main import main
 
 
 @main.app_errorhandler(404)

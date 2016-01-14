@@ -1,9 +1,9 @@
 # coding: utf-8
 import json
 from flask import jsonify, request
-from sample import ma, oauth
-from sample.api_1_0 import api
-from sample.models import db, Post
+from suda import ma, oauth
+from suda.api_1_0 import api
+from suda.models import db, Post
 
 
 class PostSchema(ma.Schema):
