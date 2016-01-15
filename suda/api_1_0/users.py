@@ -1,10 +1,10 @@
 # coding: utf-8
 
-from flask import request
+from flask import request, jsonify
 from flask.ext.restful import abort
-
 from suda import oauth, ma
 from suda.api_1_0 import api
+from suda.api_1_0.posts import posts_schema
 from suda.models import User
 
 
@@ -31,6 +31,16 @@ def me():
     return user_schema.jsonify(user)
 
 
+@api.route('/me/posts')
+@oauth.require_oauth('email')
+def my_post_list():
+    user = request.oauth.user
+
+    result = posts_schema.dump(user.posts)
+
+    return jsonify(posts=result.data)
+
+
 @api.route('/user/<username>')
 def user_info(username):
     user = User.query.filter(User.username == username).first()
@@ -38,3 +48,14 @@ def user_info(username):
         return abort(404)
 
     return user_schema.jsonify(user)
+
+
+@api.route('/user/<username>/posts')
+def user_post_list(username):
+    user = User.query.filter(User.username == username).first()
+    if not user:
+        return abort(404)
+
+    result = posts_schema.dump(user.posts)
+
+    return jsonify(posts=result.data)
