@@ -7,13 +7,13 @@ from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script.commands import ShowUrls
 
-from sample import create_app, db
+from suda import create_app, db
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
 
-    COV = coverage.coverage(branch=True, include='sample/*')
+    COV = coverage.coverage(branch=True, include='suda/*')
     COV.start()
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'development')
