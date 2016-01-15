@@ -1,0 +1,12 @@
+<section>
+    <h2>My Posts</h2>
+
+    <p><code>/api/v1.0/me/posts</code></p>
+
+   <h4>Response</h4>
+    <ul class="list-group" data-bind="foreach: posts">
+        <li class="list-group-item">
+            <span data-bind="text: id"></span>. <span data-bind="text: title"></span>
+        </li>
+    </ul>
+</section>

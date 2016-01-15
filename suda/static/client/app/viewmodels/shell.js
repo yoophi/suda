@@ -15,8 +15,14 @@
                     nav: true
                 },
                 {
+                    route: 'my_post_list',
+                    title: 'My Posts',
+                    moduleId: 'viewmodels/my_post_list',
+                    nav: true
+                },
+                {
                     route: '',
-                    title: 'Sample',
+                    title: 'Suda',
                     moduleId: 'viewmodels/suda',
                     nav: true
                 },

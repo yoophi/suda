@@ -45,63 +45,6 @@ define(['plugins/http', 'knockout'], function (http, ko) {
             })
         };
 
-        var phone_cert_request = function(phone_no) {
-            self.phone_no(phone_no)
-            var data = {
-                phone_no: phone_no
-            };
-
-            self.data(JSON.stringify(data))
-            var at = localStorage.getItem('access_token')
-            return http.post('/api/v1.0/me/phone_cert/request', data, {
-                'Authorization': 'bearer ' + at
-            }).then(function(response) {
-                self.hasPhoneCertRequestResut(true)
-                self.cert_key(response.cert_key)
-                self.response.cert_key(JSON.stringify(response))
-            })
-        }
-
-        var phone_cert_verify = function(phone_no, cert_key, cert_code) {
-            var data = {
-                cert_key: cert_key,
-                cert_code: cert_code,
-                phone_no: phone_no,
-            };
-
-            self.data(JSON.stringify(data))
-            var at = localStorage.getItem('access_token')
-            return http.post('/api/v1.0/me/phone_cert/submit', data, {
-                'Authorization': 'bearer ' + at
-            }).then(function(response) {
-                var at = localStorage.getItem('access_token')
-                call_me(at).then(function (response) {
-                    self.response.me(JSON.stringify(response));
-                });
-            })
-        }
-
-        var update_extra = function(nickname, address) {
-            var data = {
-                nickname: nickname,
-                address: address
-            }
-
-            var at = localStorage.getItem('access_token')
-            return http.post('/api/v1.0/me/extra_info', data, {
-                'Authorization': 'bearer ' + at
-            }).then(function(response) {
-                if (response.result == 'ok') {
-                    alert('반영되었습니다')
-                }
-
-                var at = localStorage.getItem('access_token')
-                call_me(at).then(function (response) {
-                    self.response.me(JSON.stringify(response));
-                });
-            })
-
-        }
         self.tryAuthenticate = function (form) {
             self.triedAuthentication(true)
 
@@ -120,32 +63,6 @@ define(['plugins/http', 'knockout'], function (http, ko) {
                 });
             })
         };
-
-        self.tryPhoneCert = function(form) {
-            if (form.phone_no.value.trim() == '')
-                return false
-
-            return phone_cert_request(form.phone_no.value.trim())
-        }
-
-        self.tryPhoneCertVerify =  function(form) {
-            if (form.cert_code.value.trim() == '')
-                return false
-
-            return phone_cert_verify(form.phone_no.value.trim(), form.cert_key.value.trim(), form.cert_code.value.trim())
-        }
-
-        self.tryUpdateExtra = function(form) {
-            ref1 = ['nickname', 'address'];
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-                key = ref1[k];
-                if (form[key].value.trim() === '') {
-                    return false;
-                }
-            }
-
-            return update_extra(form.nickname.value.trim(), form.address.value.trim())
-        }
 
 
         self.logout = function () {
