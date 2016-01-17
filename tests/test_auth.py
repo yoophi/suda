@@ -4,7 +4,6 @@
 """
 auth tester
 """
-
 from flask import url_for
 from flask.ext.fixtures import load_fixtures
 

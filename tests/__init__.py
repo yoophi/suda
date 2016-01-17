@@ -4,6 +4,8 @@
 import unittest
 import json
 from flask import url_for
+from flask.ext.testing import TestCase
+
 from suda import create_app, db
 from tests.utils import load_fixtures_from_file
 
@@ -51,3 +53,17 @@ class TesterBase(unittest.TestCase):
             raise Exception(body.get('error', None))
 
         return body['access_token']
+
+
+class ModelTestCase(TestCase):
+    def create_app(self):
+        return create_app('testing')
+
+    def setUp(self):
+        super(ModelTestCase, self).setUp()
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        super(ModelTestCase, self).tearDown()
