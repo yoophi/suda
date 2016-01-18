@@ -1,6 +1,7 @@
 # coding: utf-8
 import json
 from flask import jsonify, request
+from flask.views import MethodView
 from suda import ma, oauth
 from suda.api_1_0 import api
 from suda.models import db, Post
@@ -22,31 +23,66 @@ post_schema = PostSchema()
 posts_schema = PostSchema(many=True)
 
 
-@api.route('/post/<int:id>')
-def post(id):
-    post = Post.query.get_or_404(id)
+class PostApi(MethodView):
+    def get(self, id):
+        post = Post.query.get_or_404(id)
 
-    return post_schema.jsonify(post)
+        return post_schema.jsonify(post)
 
+    @oauth.require_oauth('email')
+    def post(self, id):
+        current_user = request.oauth.user
+        post = Post.query.get_or_404(id)
 
-@api.route('/posts')
-def posts():
-    posts = Post.query.all()
-    result = posts_schema.dump(posts)
+        if post.user_id != current_user.id:
+            return jsonify(error=True, message='Invalid access'), 401
 
-    return jsonify(posts=result.data)
+        payload = json.loads(request.data)
 
+        if payload.get('title'):
+            post.title = payload.get('title')
 
-@api.route('/post', methods=['PUT'])
-@oauth.require_oauth('email')
-def post_add():
-    current_user = request.oauth.user
-    data = json.loads(request.data)
-    post = Post(title=data['title'], body=data['body'], user_id=current_user.id)
-    db.session.add(post)
-    try:
+        if payload.get('body'):
+            post.body = payload.get('body')
+
         db.session.commit()
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
 
-    return post_schema.jsonify(post)
+        return jsonify(result='Operate successfully', post=post_schema.dump(post).data)
+
+    @oauth.require_oauth('email')
+    def delete(self, id):
+        current_user = request.oauth.user
+        post = Post.query.get_or_404(id)
+
+        if post.user_id != current_user.id:
+            return jsonify(error=True, message='Invalid access'), 401
+
+        db.session.delete(post)
+        db.session.commit()
+
+        return jsonify(result='Operate successfully')
+
+
+class PostListApi(MethodView):
+    def get(self):
+        posts = Post.query.all()
+        result = posts_schema.dump(posts)
+
+        return jsonify(posts=result.data)
+
+    @oauth.require_oauth('email')
+    def put(self):
+        current_user = request.oauth.user
+
+        payload = json.loads(request.data)
+        post = Post(title=payload.get('title'), body=payload.get('body'), user_id=current_user.id)
+        db.session.add(post)
+        db.session.commit()
+
+        return jsonify(result='Operate successfully',
+                       post=post_schema.dump(post).data,
+                       )
+
+
+api.add_url_rule('/post/<int:id>', view_func=PostApi.as_view('post'))
+api.add_url_rule('/posts', view_func=PostListApi.as_view('posts'))

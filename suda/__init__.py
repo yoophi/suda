@@ -7,8 +7,8 @@ from flask import Flask
 from flask.ext.config import Config
 from flask.ext.cors import CORS
 from flask.ext.login import LoginManager
+from flask.ext.marshmallow import Marshmallow
 from flask.ext.oauthlib.provider import OAuth2Provider
-from flask_marshmallow import Marshmallow
 
 from .models import db, User
 
@@ -18,10 +18,11 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
-oauth = OAuth2Provider()
 config = Config()
 cors = CORS()
 ma = Marshmallow()
+oauth = OAuth2Provider()
+
 
 def create_app(config_name):
     """
