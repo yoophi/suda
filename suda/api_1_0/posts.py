@@ -30,7 +30,11 @@ class PostApi(MethodView):
         return post_schema.jsonify(post)
 
     @oauth.require_oauth('email')
-    def post(self, id):
+    def put(self, id):
+        """
+        update post with given id
+        :param id:
+        """
         current_user = request.oauth.user
         post = Post.query.get_or_404(id)
 
@@ -71,7 +75,10 @@ class PostListApi(MethodView):
         return jsonify(posts=result.data)
 
     @oauth.require_oauth('email')
-    def put(self):
+    def post(self):
+        """
+        create new post
+        """
         current_user = request.oauth.user
 
         payload = json.loads(request.data)
