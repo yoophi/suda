@@ -37,6 +37,11 @@ def create_app(config_name):
     config.init_app(app)
 
     app.config.from_yaml(config_name=config_name, search_paths=[os.path.dirname(app.root_path)])
+    app.config.from_heroku(keys=[
+        'DEBUG',
+        'SECRET_KEY',
+        'SQLALCHEMY_DATABASE_URI',
+    ])
 
     cors.init_app(app)
     db.init_app(app)
