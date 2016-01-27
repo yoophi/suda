@@ -11,6 +11,11 @@ from sqlalchemy.orm import relationship, synonym
 
 db = SQLAlchemy()
 
+class BaseMixin(object):
+    id = db.Column(db.Integer, primary_key=True)
+    updated_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime)
+
 
 class Client(db.Model):
     __tablename__ = 'clients'
@@ -58,10 +63,9 @@ class Client(db.Model):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
 
-class User(db.Model):
+class User(db.Model, BaseMixin):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Unicode(100), unique=True, nullable=False)
     name = db.Column(db.Unicode(200))
     _password = db.Column('password', db.Unicode(100))
@@ -194,15 +198,24 @@ class Token(db.Model):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
 
-class Post(db.Model):
+
+class Post(db.Model, BaseMixin):
     __tablename__ = 'posts'
 
-    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey("users.id"))
     user = relationship("User", backref='posts')
 
     title = db.Column(db.Unicode)
     body = db.Column(db.Text)
 
-    created_at = db.Column(db.DateTime)
-    updated_at = db.Column(db.DateTime)
+
+class Comment(db.Model, BaseMixin):
+    __tablename__ = 'comments'
+
+    user_id = db.Column(db.Integer, ForeignKey("users.id"))
+    user = relationship("User", backref='comments')
+
+    post_id = db.Column(db.Integer, ForeignKey("posts.id"))
+    post = relationship("Post", backref='comments')
+
+    body = db.Column(db.Text)
