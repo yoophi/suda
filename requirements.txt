@@ -1,4 +1,5 @@
 Flask-BabelEx==0.9.2
+Flask-Config-Helper
 Flask-Cors==2.1.0
 Flask-DebugToolbar==0.10.0
 Flask-Fixtures==0.3.3
@@ -16,7 +17,6 @@ SQLAlchemy==0.9.8
 Werkzeug==0.10.4
 flask-admin==1.3
 flatdict==1.2.0
-git+https://github.com/yoophi/flask-config.git@dce41adf17ad168c1d4d05b3601bb8a7d4d3641d#egg=Flask-Config
 gunicorn==19.3.0
 inflection==0.3.1
 marshmallow-sqlalchemy==0.8.0

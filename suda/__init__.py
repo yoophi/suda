@@ -4,7 +4,7 @@ import os
 import os.path as op
 
 from flask import Flask
-from flask.ext.config import Config
+from flask.ext.config_helper import Config
 from flask.ext.cors import CORS
 from flask.ext.login import LoginManager
 from flask.ext.marshmallow import Marshmallow
