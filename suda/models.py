@@ -5,16 +5,20 @@
 sqlalchemy model
 """
 
+from datetime import datetime
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, synonym
 
 db = SQLAlchemy()
 
+
 class BaseMixin(object):
     id = db.Column(db.Integer, primary_key=True)
-    updated_at = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column('created_at', db.DateTime, nullable=False,
+                           default=datetime.now)
+    updated_at = db.Column('updated_at', db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
 
 
 class Client(db.Model):
@@ -196,7 +200,6 @@ class Token(db.Model):
 
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
-
 
 
 class Post(db.Model, BaseMixin):
