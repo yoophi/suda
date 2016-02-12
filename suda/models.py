@@ -7,7 +7,7 @@ sqlalchemy model
 
 from datetime import datetime
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, synonym
 
 db = SQLAlchemy()
@@ -222,3 +222,16 @@ class Comment(db.Model, BaseMixin):
     post = relationship("Post", backref='comments')
 
     body = db.Column(db.Text)
+
+
+class Follow(db.Model, BaseMixin):
+    __tablename__ = 'follows'
+    __table_args__ = (
+        (UniqueConstraint("user_id", "follower_id", name="unique_idx_user_id_follower_id")),
+    )
+
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    follower_id = db.Column(db.Integer, ForeignKey('users.id'))
+
+    user = relationship('User', foreign_keys=user_id, backref='followers')
+    follower = relationship('User', foreign_keys=follower_id, backref='followings')

@@ -3,7 +3,7 @@ from flask import Flask, redirect
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.config_helper import Config
-from suda.models import db, Post, User, Token, Comment
+from suda.models import db, Post, User, Token, Comment, Follow
 from suda.models import Client
 
 app = Flask(__name__)
@@ -24,6 +24,7 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Post, db.session))
 admin.add_view(ModelView(Comment, db.session))
 admin.add_view(ModelView(Token, db.session))
+admin.add_view(ModelView(Follow, db.session))
 
 if __name__ == '__main__':
     app.run(debug=True)
