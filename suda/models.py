@@ -116,6 +116,18 @@ class User(db.Model, BaseMixin):
     def get_id(self):
         return self.id
 
+    def add_follower(self, follower):
+        follow = Follow(user=self, follower=follower)
+        self.followers.append(follow)
+        # db.session.add(self)
+        # db.session.commit()
+
+    def get_followers(self):
+        return [f.follower for f in self.followers]
+
+    def get_followings(self):
+        return [f.user for f in self.followings]
+
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
 
@@ -235,3 +247,6 @@ class Follow(db.Model, BaseMixin):
 
     user = relationship('User', foreign_keys=user_id, backref='followers')
     follower = relationship('User', foreign_keys=follower_id, backref='followings')
+
+    def __repr__(self):
+        return u'<{self.__class__.__name__}: {self.follower_id} to {self.user_id}>'.format(self=self)
