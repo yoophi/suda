@@ -1,9 +1,12 @@
-from flask.ext.fixtures import load_fixtures
+import json
 
+from flask import url_for
+from flask.ext.fixtures import load_fixtures
 from sqlalchemy.exc import IntegrityError
 
 from suda import db
 from suda.models import User
+
 from tests import ModelTestCase
 
 dataset = [
@@ -83,3 +86,39 @@ class FollowModelTest(ModelTestCase):
             db.session.commit()
 
         self.assertEqual(2, len(followers), 'user has two follower')
+
+
+from flask.ext.testing import TestCase
+from suda import create_app
+
+
+class SampleTest(TestCase):
+    def create_app(self):
+        return create_app('testing')
+
+    def setUp(self):
+        super(SampleTest, self).setUp()
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        super(SampleTest, self).tearDown()
+
+    def test_user_followers(self):
+        load_fixtures(db, dataset)
+
+        rv = self.client.get(url_for('api.user_followers', username='suda@test.com'))
+        self.assert200(rv)
+        self.assertEqual(1, len(json.loads(rv.data)['users']))
+
+    def test_user_followings(self):
+        load_fixtures(db, dataset)
+
+        rv = self.client.get(url_for('api.user_followings', username='suda@test.com'))
+        self.assert200(rv)
+        self.assertEqual(0, len(json.loads(rv.data)['users']))
+
+        rv1 = self.client.get(url_for('api.user_followings', username='user1@test.com'))
+        self.assert200(rv1)
+        self.assertEqual(1, len(json.loads(rv1.data)['users']))

@@ -59,3 +59,24 @@ def user_post_list(username):
     result = posts_schema.dump(user.posts)
 
     return jsonify(posts=result.data)
+
+
+@api.route('/user/<username>/followers')
+def user_followers(username):
+    user = User.query.filter(User.username == username).first()
+    if not user:
+        return abort(404)
+
+    result = user.get_followers()
+
+    return jsonify(users=users_schema.dump(result).data)
+
+@api.route('/user/<username>/followings')
+def user_followings(username):
+    user = User.query.filter(User.username == username).first()
+    if not user:
+        return abort(404)
+
+    result = user.get_followings()
+
+    return jsonify(users=users_schema.dump(result).data)
