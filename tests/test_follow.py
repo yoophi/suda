@@ -2,11 +2,11 @@ import json
 
 from flask import url_for
 from flask.ext.fixtures import load_fixtures
+from flask.ext.testing import TestCase
 from sqlalchemy.exc import IntegrityError
 
-from suda import db
+from suda import db, create_app
 from suda.models import User
-
 from tests import ModelTestCase
 
 dataset = [
@@ -87,12 +87,30 @@ class FollowModelTest(ModelTestCase):
 
         self.assertEqual(2, len(followers), 'user has two follower')
 
+    def test_follow(self):
+        load_fixtures(db, dataset)
 
-from flask.ext.testing import TestCase
-from suda import create_app
+        user = User.query.get(1)
+        self.assertEqual(0, len(user.followings))
+        self.assertEqual(0, len(user.get_followings()))
+
+        u2 = User.query.get(2)
+        user.follow(u2)
+
+        db.session.add(user)
+        db.session.commit()
+
+        self.assertEqual(1, len(user.followings))
+        self.assertEqual(1, len(user.get_followings()))
+        self.assertEqual(u2, user.get_followings()[0])
+
+        with self.assertRaises(IntegrityError):
+            user.follow(u2)
+            db.session.add(user)
+            db.session.commit()
 
 
-class SampleTest(TestCase):
+class FollowClientTest(TestCase):
     def create_app(self):
         return create_app('testing')
 

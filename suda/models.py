@@ -6,6 +6,7 @@ sqlalchemy model
 """
 
 from datetime import datetime
+
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship, synonym
@@ -127,6 +128,11 @@ class User(db.Model, BaseMixin):
 
     def get_followings(self):
         return [f.user for f in self.followings]
+
+    def follow(self, target_user):
+        f = Follow()
+        f.user = target_user
+        f.follower = self
 
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
