@@ -31,6 +31,24 @@ def me():
     return user_schema.jsonify(user)
 
 
+@api.route('/me/followers', methods=['GET'])
+@oauth.require_oauth('email')
+def my_followers_list():
+    user = request.oauth.user
+    result = user.get_followers()
+
+    return jsonify(users=users_schema.dump(result).data)
+
+
+@api.route('/me/followings', methods=['GET'])
+@oauth.require_oauth('email')
+def my_followings_list():
+    user = request.oauth.user
+    result = user.get_followings()
+
+    return jsonify(users=users_schema.dump(result).data)
+
+
 @api.route('/me/posts')
 @oauth.require_oauth('email')
 def my_post_list():
@@ -70,6 +88,7 @@ def user_followers(username):
     result = user.get_followers()
 
     return jsonify(users=users_schema.dump(result).data)
+
 
 @api.route('/user/<username>/followings')
 def user_followings(username):
