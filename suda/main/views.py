@@ -36,3 +36,8 @@ def post_add():
         return redirect(url_for('main.posts'))
 
     return render_template('posts/add.html', form=form)
+
+
+@main.route('/error')
+def error():
+    return 'ERROR_URI'

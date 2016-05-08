@@ -24,6 +24,7 @@ class BaseMixin(object):
 
 class Client(db.Model):
     __tablename__ = 'clients'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(40))
 
@@ -118,21 +119,21 @@ class User(db.Model, BaseMixin):
         return self.id
 
     def add_follower(self, follower):
-        follow = Follow(user=self, follower=follower)
+        follow = Relationship(user=self, follower=follower)
         self.followers.append(follow)
         # db.session.add(self)
         # db.session.commit()
 
-    def get_followers(self):
+    def get_followed_by(self):
         return [f.follower for f in self.followers]
 
-    def get_followings(self):
+    def get_follows(self):
         return [f.user for f in self.followings]
 
     def follow(self, target_user):
-        f = Follow()
+        f = Relationship()
         f.user = target_user
-        f.follower = self
+        f.followed_by = self
 
     def __repr__(self):
         return u'<{self.__class__.__name__}: {self.id}>'.format(self=self)
@@ -143,7 +144,6 @@ class Grant(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    # user_id = db.Column(db.Unicode(200))dd
     user_id = db.Column(
         db.Integer,
         db.ForeignKey(User.__tablename__ + '.id'),
@@ -242,17 +242,17 @@ class Comment(db.Model, BaseMixin):
     body = db.Column(db.Text)
 
 
-class Follow(db.Model, BaseMixin):
-    __tablename__ = 'follows'
+class Relationship(db.Model, BaseMixin):
+    __tablename__ = 'relationships'
     __table_args__ = (
-        (UniqueConstraint("user_id", "follower_id", name="unique_idx_user_id_follower_id")),
+        (UniqueConstraint("user_id", "followed_by_id", name="unique_idx_user_id_followed_by_id")),
     )
 
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
-    follower_id = db.Column(db.Integer, ForeignKey('users.id'))
+    followed_by_id = db.Column(db.Integer, ForeignKey('users.id'))
 
-    user = relationship('User', foreign_keys=user_id, backref='followers')
-    follower = relationship('User', foreign_keys=follower_id, backref='followings')
+    user = relationship('User', foreign_keys=user_id, backref='followed_by')
+    followed_by = relationship('User', foreign_keys=followed_by_id, backref='follows')
 
     def __repr__(self):
-        return u'<{self.__class__.__name__}: {self.follower_id} to {self.user_id}>'.format(self=self)
+        return u'<{self.__class__.__name__}: {self.followed_by_id} to {self.user_id}>'.format(self=self)

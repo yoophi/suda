@@ -24,29 +24,35 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
 
-@api.route('/me')
+@api.route('/users/self')
 @oauth.require_oauth('email')
 def me():
     user = request.oauth.user
     return user_schema.jsonify(user)
 
 
-@api.route('/me/followers', methods=['GET'])
+@api.route('/users/self/followed-by', methods=['GET'])
 @oauth.require_oauth('email')
-def my_followers_list():
+def self_followed_by():
     user = request.oauth.user
-    result = user.get_followers()
+    result = user.get_followed_by()
 
     return jsonify(users=users_schema.dump(result).data)
 
 
-@api.route('/me/followings', methods=['GET'])
+@api.route('/users/self/follows', methods=['GET'])
 @oauth.require_oauth('email')
-def my_followings_list():
+def self_follows():
     user = request.oauth.user
-    result = user.get_followings()
+    result = user.get_follows()
 
     return jsonify(users=users_schema.dump(result).data)
+
+
+@api.route('/me/followings', methods=['POST'])
+@oauth.require_oauth('email')
+def create_following():
+    pass
 
 
 @api.route('/me/posts')
@@ -79,23 +85,23 @@ def user_post_list(username):
     return jsonify(posts=result.data)
 
 
-@api.route('/user/<username>/followers')
-def user_followers(username):
+@api.route('/user/<username>/followed-by')
+def user_followed_by(username):
     user = User.query.filter(User.username == username).first()
     if not user:
         return abort(404)
 
-    result = user.get_followers()
+    result = user.get_followed_by()
 
     return jsonify(users=users_schema.dump(result).data)
 
 
-@api.route('/user/<username>/followings')
-def user_followings(username):
+@api.route('/user/<username>/follows')
+def user_follows(username):
     user = User.query.filter(User.username == username).first()
     if not user:
         return abort(404)
 
-    result = user.get_followings()
+    result = user.get_follows()
 
     return jsonify(users=users_schema.dump(result).data)
